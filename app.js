@@ -1,22 +1,35 @@
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose")
-const db = require("./config/keys").mongoURI /// import keys
-const users = require("./routes/api/users")
-const tweets = require("./routes/api/tweets")
+const mongoose = require("mongoose");
+const db = require("./config/keys").mongoURI; /// import keys
+const users = require("./routes/api/users");
+const tweets = require("./routes/api/tweets");
+const User = require("./models/User");
+const bodyParser = require("body-parser");
 
 
-// connect to MongoDB using Mongoose
+// connect to MongoDB
 mongoose
 .connect(db, { useNewUrlParser: true })
 .then(() => console.log("Connected to MongoDB successfully"))
 .catch(err => console.log(err));
+
+// setup middleware for body parser
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 
 // ROOT route
 app.get("/", (req, res) => {
     //debugger
     // console.log(res); 
+
+    // const user = new User({
+    //     handle: "fred",
+    //     email: "fred@fred.com",
+    //     password: "123456"
+    // })
+    // user.save()
     res.send("It works!");
 });
 
